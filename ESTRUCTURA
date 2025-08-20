@@ -1,0 +1,21 @@
+foro-hub-api/
+│── .gitignore
+│── pom.xml
+│── README.md
+│
+└── src/
+    ├── main/
+    │   ├── java/com/tuusuario/forohub/
+    │   │   ├── controller/   # Controladores REST
+    │   │   ├── dto/          # Clases DTO (request/response)
+    │   │   ├── model/        # Entidades (JPA)
+    │   │   ├── repository/   # Interfaces JpaRepository
+    │   │   ├── service/      # Lógica de negocio
+    │   │   ├── security/     # Configuración JWT + Spring Security
+    │   │   └── ForoHubApplication.java
+    │   │
+    │   └── resources/
+    │       ├── application.properties  # Configuración DB, JWT, etc.
+    │       └── db/migration/           # Migraciones con Flyway
+    │
+    └── test/java/com/tuusuario/forohub/  # Pruebas unitarias

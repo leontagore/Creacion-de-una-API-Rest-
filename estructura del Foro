@@ -1,0 +1,45 @@
+ForoHub - Módulo de Seguridad (Spring Boot 3 + JWT)
+
+Este paquete implementa autenticación y autorización con Spring Security 6 para una API REST en Spring Boot 3 usando JWT. Incluye:
+
+Configuración de seguridad (filtro JWT, CORS, stateless, rutas públicas/privadas)
+
+Generación y validación de tokens (Auth0 java-jwt)
+
+Entidad Usuario con roles (enum) y UserDetails
+
+UserDetailsService + AuthenticationProvider
+
+Endpoint /login para autenticar y devolver el token
+
+Migraciones Flyway para tablas usuarios y ejemplo de topicos
+
+🗂️ Estructura de carpetas sugerida
+
+foro-hub-api/
+├─ pom.xml
+├─ src/main/java/com/forohub/
+│ ├─ ForoHubApplication.java
+│ ├─ security/
+│ │ ├─ SecurityConfig.java
+│ │ ├─ JwtAuthenticationFilter.java
+│ │ ├─ TokenService.java
+│ │ ├─ WebConfig.java
+│ ├─ domain/usuario/
+│ │ ├─ Usuario.java
+│ │ ├─ Role.java
+│ │ ├─ UsuarioRepository.java
+│ │ ├─ CustomUserDetailsService.java
+│ ├─ controller/
+│ │ └─ AuthController.java
+│ ├─ dto/
+│ │ ├─ LoginRequest.java
+│ │ └─ JwtResponse.java
+│ └─ exception/
+│ └─ ApiExceptionHandler.java
+└─ src/main/resources/
+├─ application.properties
+└─ db/migration/
+├─ V1__crear_tablas_usuarios_y_topicos.sql
+└─ V2__usuario_admin_seed.sql
+

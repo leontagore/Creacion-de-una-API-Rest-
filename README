@@ -1,0 +1,26 @@
+# 📌 ForoHub API - Spring Boot 3
+
+ForoHub es una **API REST desarrollada en Java con Spring Boot 3** que simula el funcionamiento de un foro, donde los usuarios pueden crear, consultar, actualizar y eliminar tópicos relacionados con distintos cursos.  
+Este proyecto forma parte del challenge de **Alura + Oracle**.
+
+---
+
+## 🚀 Tecnologías utilizadas
+- **Java 17**  
+- **Spring Boot 3**  
+- **Maven 4+**  
+- **Spring Data JPA**  
+- **MySQL 8+**  
+- **Spring Security + JWT**  
+- **Flyway Migration**  
+- **Lombok**  
+- **Swagger (opcional)**  
+
+---
+
+## ⚙️ Instalación y configuración
+
+### 1️⃣ Clonar el repositorio
+```bash
+git clone https://github.com/TU_USUARIO/foro-hub-api.git
+cd foro-hub-api

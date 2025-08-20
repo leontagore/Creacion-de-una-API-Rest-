@@ -1,0 +1,102 @@
+TokenService.java
+
+package com.forohub.security;
+
+
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.forohub.domain.usuario.Usuario;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
+
+
+@Service
+public class TokenService {
+
+
+@Value("${security.jwt.secret}")
+private String secret;
+
+
+@Value("${security.jwt.issuer}")
+private String issuer;
+
+
+@Value("${security.jwt.expiration-min}")
+private long expirationMin;
+
+
+public String generarToken(Usuario usuario) {
+Algorithm algorithm = Algorithm.HMAC256(secret);
+Instant ahora = Instant.now();
+return JWT.create()
+.withIssuer(issuer)
+.withSubject(usuario.getUsername())
+.withClaim("role", usuario.getRole().name())
+.withIssuedAt(Date.from(ahora))
+.withExpiresAt(Date.from(ahora.plus(expirationMin, ChronoUnit.MINUTES)))
+.sign(algorithm);
+}
+
+
+public String getSubject(String token) {
+try {
+Algorithm algorithm = Algorithm.HMAC256(secret);
+return JWT.require(algorithm)
+.withIssuer(issuer)
+.build()
+.verify(token)
+.getSubject();
+} catch (JWTVerificationException ex) {
+return null; // token inválido / expirado
+}
+}
+}
+
+JwtAuthenticationFilter.java
+
+package com.forohub.security;
+
+
+import com.forohub.domain.usuario.CustomUserDetailsService;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+
+import java.io.IOException;
+
+
+@Component
+@RequiredArgsConstructor
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
+
+private final TokenService tokenService;
+private final CustomUserDetailsService userDetailsService;
+
+
+@Override
+protected void doFilterInternal(HttpServletRequest request,
+HttpServletResponse response,
+FilterChain filterChain) throws ServletException, IOException {
+final String authHeader = request.getHeader("Authorization");
+if (authHeader != null && authHeader.startsWith("Bearer ")) {
+String token = authHeader.substring(7);
+String username = tokenService.getSubject(token);
+if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+var userDetails = userDetailsService.loadUserByUse
+
